@@ -13,6 +13,7 @@ dataStart.setAttribute('disabled', true);
 dataStart.addEventListener('click', onDataStartClick);
 
 let date = null;
+
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -32,8 +33,12 @@ const options = {
 flatpickr('#datetime-picker', options);
 
 function onDataStartClick() {
-  setInterval(() => {
+  const time = setInterval(() => {
     const currentTime = date - new Date();
+    if (currentTime < 0) {
+      clearInterval(time);
+      return;
+    }
     const { days, hours, minutes, seconds } = convert(currentTime);
     dataDays.textContent = days;
     dataHours.textContent = hours;

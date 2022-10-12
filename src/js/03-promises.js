@@ -17,22 +17,26 @@ function onFormClick(event) {
       clearInterval(intervalId);
       return;
     }
-    createPromise(counter, delay)
-      .then(({ position, delay }) => {
-        Notiflix.Notify.success(
-          `✅ Fulfilled promise ${position} in ${delay}ms`
-        );
-      })
 
-      .catch(({ position, delay }) => {
-        Notiflix.Notify.failure(
-          `❌ Rejected promise ${position} in ${delay}ms`
-        );
-      });
+    createPromise(counter, delay).then(onSuccess).catch(onError);
 
     counter += 1;
     delay += step;
+
+    event.target.reset();
   }, step);
+}
+
+function onSuccess({ position, delay }) {
+  Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`, {
+    useIcon: false,
+  });
+}
+
+function onError({ position, delay }) {
+  Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`, {
+    useIcon: false,
+  });
 }
 
 function createPromise(position, delay) {
